@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fdefd240-8c21-4cb7-86f2-ac52b458db59" name="Changes" comment="refactor: Updated scratch file">
-      <change afterPath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/system/microsoft/windows/Constants.java" afterDir="false" />
+    <list default="true" id="fdefd240-8c21-4cb7-86f2-ac52b458db59" name="Changes" comment="fix: Fixed render memory leak">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_3_0_0a.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_platform_natives_linux_3_0_0a.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_platform_natives_osx_3_0_0a.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_platform_natives_windows_3_0_0a.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scratches/src/main/java/com/github/skylixgh/hello/SharedLibraryLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/scratches/elixor.scratches.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/scratches/elixor.scratches.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/scratches/elixor.scratches.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/scratches/elixor.scratches.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/system/microsoft/windows/WindowsJFrameProcess.java" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/system/microsoft/windows/WindowsJFrameProcess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/generic/div/Div.java" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/generic/div/Div.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/renderer/gpu/GPU.java" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/renderer/gpu/GPU.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/window/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/window/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratches/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/scratches/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratches/src/main/java/com/github/skylixgh/hello/MyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/scratches/src/main/java/com/github/skylixgh/hello/MyApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +51,19 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="elixor" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="application" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="elixor" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="elixor" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build setup" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -61,11 +82,6 @@
                 <item name="scratches" type="2d1252cf:ModuleNode" />
                 <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="elixor" type="f1a62948:ProjectNode" />
-                <item name="terminal" type="2d1252cf:ModuleNode" />
-              </path>
             </expand>
             <select />
           </tree_state>
@@ -76,20 +92,20 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Record" />
         <option value="AnnotationType" />
         <option value="JavaFXApplication" />
         <option value="Interface" />
         <option value="HTML File" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="rewrite" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -105,24 +121,13 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/component/div/Div.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/desktop/build.gradle" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/component/Component.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/unit/BorderRadius.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.11.0/e410fd6ea73bae2f368131d2573aa4e284744300/jna-5.11.0-sources.jar!/com/sun/jna/NativeLibrary.java" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/unit/Position.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/engines/layout/BorderLayout.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/scratches/src/main/java/com/github/skylixgh/hello/MyApp.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/window/Window.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/display/Display.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/display/DisplayManager.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/engines/HierarchyRenderer.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/engines/HierarchyTree.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/desktop/src/main/java/net/skylix/elixor/desktop/system/microsoft/windows/WindowsJFrameProcess.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/OneDrive/Desktop/win.hta" root0="FORCE_HIGHLIGHTING" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.11.0/e410fd6ea73bae2f368131d2573aa4e284744300/jna-5.11.0-sources.jar!/com/sun/jna/NativeLibrary.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/settings.gradle" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/build.gradle" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/scratches/src/main/java/com/github/skylixgh/hello/MyApp.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -143,6 +148,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
     <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JAVA&#10;PLAIN_TEXT" />
@@ -387,35 +393,9 @@
       <workItem from="1652697573086" duration="17836000" />
       <workItem from="1652784041451" duration="11401000" />
       <workItem from="1652912040589" duration="6390000" />
-      <workItem from="1652999519411" duration="10503000" />
-    </task>
-    <task id="LOCAL-00041" summary="[Sync: apiSocket.*] 💕 Add [ + ]">
-      <created>1650969752036</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1650969752036</updated>
-    </task>
-    <task id="LOCAL-00042" summary="[Sync: *] 💕 Theme system">
-      <created>1651031237505</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1651031237508</updated>
-    </task>
-    <task id="LOCAL-00043" summary="[Sync: *] 💕 Bug with transparency">
-      <created>1651032706719</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1651032706719</updated>
-    </task>
-    <task id="LOCAL-00044" summary="[Optimised terminal] Module has been optimised for performance">
-      <created>1651056770035</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1651056770035</updated>
+      <workItem from="1652999519411" duration="12624000" />
+      <workItem from="1653422859939" duration="12618000" />
+      <workItem from="1653516723212" duration="8664000" />
     </task>
     <task id="LOCAL-00045" summary="[Optimised desktop] Module has been optimised for performance">
       <created>1651057180163</created>
@@ -732,7 +712,35 @@
       <option name="project" value="LOCAL" />
       <updated>1652929917737</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="fix: Frame resize fix&#10;&#10;Co-authored-by: EmeraldMike &lt;EmeraldMike@users.noreply.github.com&gt;">
+      <created>1653015150829</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1653015150829</updated>
+    </task>
+    <task id="LOCAL-00091" summary="fix: Code">
+      <created>1653364332517</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1653364332517</updated>
+    </task>
+    <task id="LOCAL-00092" summary="fix: Scale rendering">
+      <created>1653448819999</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1653448820000</updated>
+    </task>
+    <task id="LOCAL-00093" summary="fix: Fixed render memory leak">
+      <created>1653449962085</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1653449962085</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -751,10 +759,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="feat: Added labels" />
-    <MESSAGE value="feat: Custom drag regions supports" />
-    <MESSAGE value="fix: Dragging" />
-    <MESSAGE value="fix: Dragging relativity of component" />
     <MESSAGE value="fix: Dragging exc of component" />
     <MESSAGE value="fix: Dragging relativity of window fixes" />
     <MESSAGE value="fix: Fixed titlebar cutoff issue" />
@@ -776,7 +780,11 @@
     <MESSAGE value="feat: Support for clip enable/disable" />
     <MESSAGE value="feat: Updated tree rendering" />
     <MESSAGE value="refactor: Updated scratch file" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: Updated scratch file" />
+    <MESSAGE value="fix: Frame resize fix&#10;&#10;Co-authored-by: EmeraldMike &lt;EmeraldMike@users.noreply.github.com&gt;" />
+    <MESSAGE value="fix: Code" />
+    <MESSAGE value="fix: Scale rendering" />
+    <MESSAGE value="fix: Fixed render memory leak" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Fixed render memory leak" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

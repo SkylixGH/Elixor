@@ -1,26 +1,21 @@
 package net.skylix.elixor.desktop.window;
 
-import net.skylix.elixor.desktop.engines.HierarchyRenderer;
-import net.skylix.elixor.desktop.engines.HierarchyTree;
-import net.skylix.elixor.desktop.engines.Layout;
-import net.skylix.elixor.desktop.system.microsoft.windows.WindowsJFrameProcess;
-import net.skylix.elixor.desktop.unit.Position;
-import net.skylix.elixor.desktop.unit.Size;
-import net.skylix.elixor.desktop.unit.UnitAdapter;
-import net.skylix.elixor.desktop.component.Component;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.Native;
+import javax.swing.JFrame;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Objects;
+import net.skylix.elixor.desktop.renderer.canvas.Canvas;
+import net.skylix.elixor.desktop.renderer.color.Color;
+import net.skylix.elixor.desktop.renderer.element.Element;
+import net.skylix.elixor.desktop.renderer.gpu.GPU;
+import net.skylix.elixor.desktop.renderer.gpu.Renderer;
+import net.skylix.elixor.desktop.unit.Location;
+import net.skylix.elixor.desktop.unit.Size;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Path2D;
 
 /**
- * A window class for creating windows.
+ * A cross-platform desktop platform window.
  */
 public class Window {
     /**
@@ -29,262 +24,181 @@ public class Window {
     private String title;
 
     /**
-     * Swing window.
+     * The size of the window.
      */
-    private JFrame jFrame;
+    private Size size;
 
     /**
-     * The window size.
+     * The location of the window.
      */
-    private final Size size;
+    private Location location;
 
     /**
-     * The mouse position.
+     * The Java swing window.
      */
-    private final Position mousePosition;
+    private final JFrame swingWindow;
 
     /**
-     * The hierarchy tree of the window.
+     * The refresh thread.
      */
-    private final HierarchyTree hierarchyTree;
+    private Thread refreshThread;
 
     /**
-     * The base client area.
+     * The current root element.
      */
-    private final JComponent clientArea;
-
-    /**
-     * The window JFrame process for the Windows OS.
-     */
-    private WindowsJFrameProcess winJFP;
+    private Element rootElement;
 
     /**
      * Create a new window.
-     *
+     * 
      * @param title The title of the window.
+     * @param size The size of the window.
+     * @param location The location position of the window.
      */
-    public Window(String title) {
+    public Window(final String title, final Size size, final Location location) {
         this.title = title;
+        this.size = size;
+        this.location = location;
 
-        size = new Size();
-        jFrame = new JFrame(title);
-        hierarchyTree = new HierarchyTree(null);
-        mousePosition = new Position();
+        swingWindow = new JFrame(title);
 
-        final Window self = this;
+        swingWindow.setLocation(location.x(), location.y());
+        swingWindow.setSize(size.width(), size.height());
 
-        clientArea = new JPanel() {
+        final Window window = this;
+
+        final Canvas viewport = new Canvas() {
             @Override
             public void paintComponent(Graphics g3d) {
+                super.paintComponent(g3d);
 
-                Graphics2D g2d = (Graphics2D) g3d;
-                HierarchyRenderer.render(g2d, hierarchyTree, self);
+                if (rootElement == null) return;
 
-                g2d.dispose();
+                final net.skylix.elixor.desktop.renderer.gpu.Graphics g = new net.skylix.elixor.desktop.renderer.gpu.Graphics((Graphics2D) g3d);
+                Renderer.render(g, rootElement, window);
             }
         };
 
-        clientArea.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                mousePosition.setX(e.getX());
-                mousePosition.setY(e.getY());
-
-                refreshWindowProperties();
-            }
-        });
-
-        size.addListener(new UnitAdapter() {
-            @Override
-            public void onChange() {
-                jFrame.setSize(size.getWidth(), size.getHeight());
-                refreshWindowProperties();
-            }
-        });
-
-        jFrame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                size.pauseOnChange();
-
-                size.setWidth(e.getComponent().getWidth());
-                size.setHeight(e.getComponent().getHeight());
-
-                size.resumeOnChange();
-                refresh();
-            }
-        });
-
-        jFrame.setContentPane(clientArea);
-        jFrame.setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/defaultIcon.png"))).getImage());
-        jFrame.setBackground(new Color(20, 20, 20));
-        
-        clientArea.setOpaque(false);
-
-        refreshWindowProperties();
+        swingWindow.setContentPane(viewport);
     }
 
     /**
-     * Calculate and set all the window properties.
+     * Create a new window.
+     * 
+     * @param title The title of the window.
+     * @param size The size information for the window.
      */
-    private void refreshWindowProperties() {
-        clientArea.repaint();
+    public Window(final String title, final Size size) {
+        this(title, size, new Location(0, 0));
     }
 
     /**
-     * Get the window title.
-     *
-     * @return The window title.
+     * Create a new window.
+     * 
+     * @param title The title of the window.
+     */
+    public Window(final String title) {
+        this(title, new Size(0, 0));
+    }
+
+    /**
+     * Create a new window.
+     */
+    public Window() {
+        this("");
+    }
+
+    /**
+     * Refresh the window.
+     */
+    public void refresh() {
+        swingWindow.getRootPane().repaint();
+    }
+
+    /**
+     * Get the title of the window.
+     * 
+     * @return The title of the window.
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * Set the window title.
-     *
-     * @param title The new window title.
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * Run the window to make it visible.
-     */
-    public void run() {
-        if (jFrame.isVisible()) return;
-        jFrame.setVisible(true);
-
-        winJFP = new WindowsJFrameProcess(jFrame);
-        winJFP.initializeProcess(getWindowsHandle());
-
-        // winJFP.addTitleBarDragRegion(new Point[] {
-        //     new Point(0, 0),
-        //     new Point(size.getWidth(), 32),
-        // });
-    }
-
-    /**
-     * Get the window handle.
+     * Get the size of the window.
      * 
-     * @return The window handle.
-     */
-    private WinDef.HWND getWindowsHandle() {
-        WinDef.HWND handle = new WinDef.HWND();
-        handle.setPointer(Native.getComponentPointer(jFrame));
-
-        return handle;
-    }
-
-    /**
-     * Set the window dimensions.
-     *
-     * @param size The new window size.
-     */
-    public void setSize(Size size) {
-        this.size.setWidth(size.getWidth());
-        this.size.setHeight(size.getHeight());
-
-        refreshWindowProperties();
-    }
-
-    /**
-     * Get the window size.
-     *
-     * @return The window size.
+     * @return The size of the window.
      */
     public Size getSize() {
         return size;
     }
 
     /**
-     * Get the hierarchy tree of the window.
-     *
-     * @return The hierarchy tree of the window.
-     */
-    public HierarchyTree getHierarchyTree() {
-        return hierarchyTree;
-    }
-
-    /**
-     * Add an element to the hierarchy tree.
-     *
-     * @param element The element to add.
-     */
-    public void add(Component element) {
-        hierarchyTree.add(element);
-        refreshWindowProperties();
-    }
-
-    /**
-     * Get mouse position.
-     *
-     * @return Mouse position.
-     */
-    public Position getMousePosition() {
-        return mousePosition;
-    }
-
-    /**
-     * Get mouse X position.
-     *
-     * @return Mouse X position.
-     */
-    public int getMouseX() {
-        return mousePosition.getX();
-    }
-
-    /**
-     * Get mouse Y position.
-     *
-     * @return Mouse Y position.
-     */
-    public int getMouseY() {
-        return mousePosition.getY();
-    }
-
-    /**
-     * Get the window width.
-     *
-     * @return The window width.
-     */
-    public int getWidth() {
-        return size.getWidth();
-    }
-
-    /**
-     * Get the window height.
-     *
-     * @return The window height.
-     */
-    public int getHeight() {
-        return size.getHeight();
-    }
-
-    /**
-     * Refresh the renderer, this will cause the content area to be repainted.
-     */
-    public void refresh() {
-        clientArea.repaint();
-        recursivelyProcessLayouts(hierarchyTree);
-    }
-
-    /**
-     * Recursively re-process all the layouts' information.
+     * Get the location of the window.
      * 
-     * @param tree The hierarchy tree.
+     * @return The location of the window.
      */
-    public void recursivelyProcessLayouts(HierarchyTree tree) {
-        for (Component child : tree.getElements()) {
-            final Layout layout = child.getLayoutEngine();
+    public Location getLocation() {
+        return location;
+    }
 
-            if (layout != null) {
-                layout.process(child.getTree(), child.getTree().getOwner());
+    /**
+     * Run the window to show it on the screen.
+     */
+    public void run() {
+        if (swingWindow.isVisible()) return;
+
+        refreshThread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(1000 / GPU.getFrameRate());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                refresh();
             }
+        });
 
-            if (child.getTree().getElements().length > 0) 
-                recursivelyProcessLayouts(child.getTree());
-        }    
+        refreshThread.start();
+
+        swingWindow.setVisible(true);
+    }
+
+    /**
+     * Check to see if the window is running.
+     * 
+     * @return True if the window is running, false otherwise.
+     */
+    public boolean isRunning() {
+        return swingWindow.isVisible();
+    }
+
+    /**
+     * Stop the window.
+     */
+    public void stop() {
+        if (!swingWindow.isVisible() || !swingWindow.isActive()) return;
+
+        refreshThread.interrupt();
+        swingWindow.dispose();
+    }
+
+    /**
+     * Set the root element.
+     * 
+     * @param element The root element.
+     */
+    public void setRootElement(Element element) {
+        rootElement = element;
+    }
+
+    /**
+     * Get the root element.
+     * 
+     * @return The root element.
+     */
+    public Element getRootElement() {
+        return rootElement;
     }
 }
